@@ -12,15 +12,25 @@
 
 ## Spark Overview
 
-### Apache Spark
-- Fast and general engine for large-scale data processing.
-
 ### Spark's Role
 - Spark handles parallel processing across a cluster of machines.
 - Manages the distribution of tasks across the cluster using a **Cluster Manager**:
   - Could be a Hadoop cluster (managed by YARN).
   - Could be Spark's built-in cluster manager (requires Spark installed on each machine).
   - The **Cluster Manager** coordinates with **Executors** to process data.
+  - Spark can run on top of Hadoop clusters, taking advantage of the distributed file system and YARN cluster manager. However, Spark also has its own built-in cluster manager for use outside of Hadoop.
+  - Spark and Hadoop can *Co-Exist*, they are not directly inter-replaceable.
+
+### Comparison with Hadoop MapReduce
+- Spark is a replacement for Hadoop MapReduce.
+  - **100x faster** in memory.
+  - **10x faster** on disk.
+  - This is due to Spark being a **DAG (Directed Acyclic Graph)** engine, which optimizes workflows compared to the linear structure of MapReduce.
+
+### The Driver Program
+- The script that controls your Spark job is called the **Driver Program**.
+
+
 
 ### Comparison with Hadoop MapReduce
 - Spark is a replacement for Hadoop MapReduce.
