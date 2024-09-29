@@ -1751,9 +1751,9 @@ val totalByCustomerSorted = totalByCustomer.sort("total_spent")
 These answers provide a good starting point for understanding some key concepts in Spark. Remember that Spark is a rapidly evolving technology, so it's always a good idea to refer to the latest official documentation for the most up-to-date information.
 
 
-# Advanced Examples of Apache Spark
+## Section 5 Advanced Examples of Apache Spark
 
-## Table of Contents
+### Table of Contents
 1. [MovieLens Data Format](#movielens-data-format)
 2. [Popular Movies Dataset](#popular-movies-dataset)
 3. [Broadcast Variables and UDFs](#broadcast-variables-and-udfs)
@@ -1761,16 +1761,16 @@ These answers provide a good starting point for understanding some key concepts 
 5. [Superhero Degrees of Separation](#superhero-degrees-of-separation)
 6. [Item-Based Collaborative Filtering](#item-based-collaborative-filtering)
 
-## MovieLens Data Format
+### MovieLens Data Format
 
 The MovieLens dataset has the following format:
 ```
 UserID, MovieID, Rating, Timestamp
 ```
 
-## Popular Movies Dataset
+### Popular Movies Dataset
 
-### Joining with Other Data
+#### Joining with Other Data
 
 There are three options for joining the ratings dataset with movie names:
 
@@ -1782,24 +1782,24 @@ There are three options for joining the ratings dataset with movie names:
 3. Let Spark automatically forward it to each executor when needed
    - Solution: Use broadcast variables
 
-### Implementation
+#### Implementation
 
 Refer to `PopularMoviesDataset.scala` and `PopularMoviesNicerDataset.scala` for implementation details.
 
-## Broadcast Variables and UDFs
+### Broadcast Variables and UDFs
 
 - Use `sc.broadcast()` to distribute objects to executors
 - Access the broadcast variable using `.value()`
 - Can be used for map functions, UDFs, etc.
 
-## Superhero Social Networks
+### Superhero Social Networks
 
-### Data Format
+#### Data Format
 
 - `Marvel-graph.txt`: hero ID, IDs of the hero's connections
 - `Marvel-names.txt`: hero ID, quotation mark-enclosed names
 
-### Challenge: Find the Most Popular Superhero
+#### Challenge: Find the Most Popular Superhero
 
 1. Split off hero ID from the beginning of each line
 2. Count space-separated numbers in the line (connections)
@@ -1812,14 +1812,14 @@ Refer to `MostPopularSuperHeroDataset.scala` and `MostPopularSuperHero.scala` fo
 
 Note: The RDD version (MostPopularSuperHero.scala) is more straightforward and simple compared to the Dataset version.
 
-## Superhero Degrees of Separation
+### Superhero Degrees of Separation
 
-### Introducing Breadth-First Search (BFS)
+#### Introducing Breadth-First Search (BFS)
 
 - Iterative BFS implementation in Spark
 - Introduction to accumulators
 
-### Implementation Steps
+#### Implementation Steps
 
 1. Map: Convert each line into a BFS format node with connections, distances, and color
    - Initialize every node as white with distance 9999
@@ -1838,9 +1838,9 @@ Note: The RDD version (MostPopularSuperHero.scala) is more straightforward and s
 
 Refer to `DegreesOfSeparation.scala` for the implementation.
 
-## Item-Based Collaborative Filtering
+### Item-Based Collaborative Filtering
 
-### Finding Similar Movies
+#### Finding Similar Movies
 
 1. Select userID, movieID, and rating columns
 2. Find every movie pair rated by the same user (self-join operation)
@@ -1849,14 +1849,14 @@ Refer to `DegreesOfSeparation.scala` for the implementation.
 5. Group by movie pairs and compute similarity scores
 6. Filter, sort, and display results
 
-### Caching Dataset
+#### Caching Dataset
 
 - Use `.cache()` or `.persist()` when performing more than one action on a dataset
 - `.persist()` allows caching to disk in case of node failures
 
 Refer to `MovieSimilarities1MDataset.scala` for the implementation.
 
-## Historical Context
+### Historical Context
 
 - MapReduce paradigm: Invented by Google for dealing with large amounts of data
 - Hadoop: Built on top of MapReduce
@@ -1864,3 +1864,181 @@ Refer to `MovieSimilarities1MDataset.scala` for the implementation.
 - Spark 2.0: Introduction of Datasets, inspired by SQL
 
 Note: Using RDDs is often more straightforward than Datasets for certain tasks.
+
+## Section 6 Running Apache Spark on a Cluster: A Comprehensive Guide
+
+### Table of Contents
+1. [Packaging and Deploying Your Application](#packaging-and-deploying-your-application)
+2. [Using SBT (Simple Build Tool)](#using-sbt-simple-build-tool)
+3. [Amazon Elastic MapReduce (EMR)](#amazon-elastic-mapreduce-emr)
+4. [Spark-Submit Parameters](#spark-submit-parameters)
+5. [Partitioning](#partitioning)
+6. [Best Practices for Running on a Cluster](#best-practices-for-running-on-a-cluster)
+7. [Troubleshooting Cluster Jobs](#troubleshooting-cluster-jobs)
+8. [Managing Dependencies](#managing-dependencies)
+9. [Key Points to Remember](#key-points-to-remember)
+
+### Packaging and Deploying Your Application
+
+When running Spark applications on a cluster, you need to package and deploy them properly. Here's how:
+
+#### Prepare your application:
+- Ensure no paths point to your local filesystem
+- Use distributed file systems like HDFS or S3
+
+#### Use spark-submit:
+- Command: `spark-submit`
+- Options:
+  - `--class`: Specifies the class containing your main function
+  - `--jars`: Paths to any dependencies
+  - `--files`: Files you want placed alongside your application (e.g., small lookup files)
+
+Example:
+```bash
+spark-submit --class com.example.MainClass --jars deps.jar --files lookup.txt myapp.jar
+```
+
+### Using SBT (Simple Build Tool)
+
+SBT is a powerful build tool for Scala projects:
+
+#### Benefits:
+- Manages library dependency tree
+- Packages dependencies into a self-contained JAR
+
+#### Setup:
+- Create directory structure: `src/main/scala`
+- In `project` folder, create `assembly.sbt`:
+  ```scala
+  addSbtPlugin("com.eed3si9n" % "sbt-assembly" % "0.15.0")
+  ```
+- Create `build.sbt` in the root folder:
+  ```scala
+  name := "MySparkProject"
+  version := "1.0"
+  scalaVersion := "2.12.10"
+  libraryDependencies ++= Seq(
+    "org.apache.spark" %% "spark-core" % "3.0.0" % "provided",
+    "org.apache.spark" %% "spark-sql" % "3.0.0" % "provided"
+  )
+  ```
+
+#### Build:
+- Run `sbt assembly` from the root folder
+- Find the JAR in `target/scala-<version>/`
+
+### Amazon Elastic MapReduce (EMR)
+
+EMR provides a pre-configured Spark environment:
+
+#### Setup:
+- Create a cluster with Spark, Hadoop, and YARN pre-installed
+- Use the AWS console to spin up an EMR cluster
+
+#### Deployment:
+- Copy your JAR and data to S3
+- Log into the master node using the "hadoop" user account
+- Copy files from S3 to the master node:
+  ```bash
+  aws s3 cp s3://bucket-name/file-name ./
+  ```
+- Run `spark-submit` on the master node
+
+#### Important Note: 
+- Spark and Hadoop are not mutually exclusive
+- Spark often runs on Hadoop's YARN cluster manager
+
+### Spark-Submit Parameters
+
+Key parameters for `spark-submit`:
+
+- `--master`: Set to the corresponding cluster manager (e.g., `yarn` for EMR)
+- `--num-executors`: Number of executors to launch
+- `--executor-memory`: Memory per executor
+- `--total-executor-cores`: Total cores for all executors
+
+Example:
+```bash
+spark-submit --master yarn --num-executors 5 --executor-memory 4g --total-executor-cores 20 myapp.jar
+```
+
+### Partitioning
+
+Partitioning is crucial for performance:
+
+#### Purpose: 
+- Tells Spark how to distribute tasks across the cluster
+
+#### When to use:
+- For operations like `join`, `cogroup`, `groupWith`, `join`, `groupByKey`, `reduceByKey`, `lookup()`
+
+#### How to use:
+- On DataFrame: `.repartition()`
+- On RDD: `.partitionBy()`
+
+#### Choosing partitions:
+- Rule of thumb: At least as many partitions as cores/executors
+- Start with `partitionBy(100)` for large operations
+
+Example:
+```scala
+val repartitionedDF = myDataFrame.repartition(100)
+```
+
+### Best Practices for Running on a Cluster
+
+#### Configuration:
+- Avoid specifying Spark configs in your driver script
+- Use EMR defaults and command-line options
+
+#### Memory Management:
+- If executors start failing, adjust memory allocation
+
+#### Data Access:
+- Store data in easily accessible locations (e.g., S3 for EMR)
+
+#### Testing:
+- Test with a reasonable amount of data locally before moving to the cluster
+
+### Troubleshooting Cluster Jobs
+
+#### Spark UI:
+- Available on port 4040 of the master node
+- View jobs, stages, DAG visualization, and task timelines
+
+#### Logs:
+- For YARN: Use `yarn logs -applicationId <app_id>`
+- Watch for errors like executor failures or heartbeat issues
+
+#### Common Issues:
+- Out of memory errors: Consider repartitioning or adding more hardware
+- Slow jobs: Check for data skew or inefficient operations
+
+### Managing Dependencies
+
+#### Broadcast Variables:
+- Use to share data outside of RDDs or DataFrames
+
+#### External Libraries:
+- Bundle into your JAR with SBT assembly
+- Or use `--jars` with spark-submit (but be cautious of dependency conflicts)
+
+#### Best Practice:
+- Avoid using obscure packages when possible
+
+### Key Points to Remember
+
+1. `spark-submit` is used to execute your compiled script across the entire cluster.
+
+2. In `build.sbt`, list Spark core as a provided dependency:
+   ```scala
+   "org.apache.spark" %% "spark-core" % "3.0.0" % "provided"
+   ```
+
+3. Use `--executor-memory` to specify memory for each executor.
+
+4. If a large join is running out of memory, try using `repartition()` first.
+
+5. On EMR, Spark is pre-configured to use cluster resources efficiently. Avoid manual configuration unless necessary.
+
+Remember to always terminate your cluster when you're done to avoid unnecessary costs!
