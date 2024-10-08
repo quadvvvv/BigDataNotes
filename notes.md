@@ -1,18 +1,18 @@
-# Section 1: Intro to Spark and Scala
+## Section 1: Intro to Spark and Scala
 
-## Spark and Scala Setup in IntelliJ 
+### Spark and Scala Setup in IntelliJ 
 
-### 1. Initial Setup 
+#### 1. Initial Setup 
 - Installed **Java SDK 11**.
 - Installed **Scala SDK 2.13.14**.
 - Added the **Scala Plugin** in IntelliJ.
 
-### 2. Project Build 
+#### 2. Project Build 
 - **Apache Spark** was automatically added as a dependency when building the project. This was likely configured in `build.sbt` or `pom.xml`.
 
-## Spark Overview
+### Spark Overview
 
-### Spark's Role
+#### Spark's Role
 - Spark handles parallel processing across a cluster of machines.
 - Manages the distribution of tasks across the cluster using a **Cluster Manager**:
   - Could be a Hadoop cluster (managed by YARN).
@@ -21,46 +21,46 @@
   - Spark can run on top of Hadoop clusters, taking advantage of the distributed file system and YARN cluster manager. However, Spark also has its own built-in cluster manager for use outside of Hadoop.
   - Spark and Hadoop can *Co-Exist*, they are not directly inter-replaceable.
 
-### Comparison with Hadoop MapReduce
+#### Comparison with Hadoop MapReduce
 - Spark is a replacement for Hadoop MapReduce.
   - **100x faster** in memory.
   - **10x faster** on disk.
   - This is due to Spark being a **DAG (Directed Acyclic Graph)** engine, which optimizes workflows compared to the linear structure of MapReduce.
 
-### The Driver Program
+#### The Driver Program
 - The script that controls your Spark job is called the **Driver Program**.
 
 
 
-### Comparison with Hadoop MapReduce
+#### Comparison with Hadoop MapReduce
 - Spark is a replacement for Hadoop MapReduce.
   - **100x faster** in memory.
   - **10x faster** on disk.
   - This is due to Spark being a **DAG (Directed Acyclic Graph)** engine, which optimizes workflows compared to the linear structure of MapReduce.
 
-### Supported Languages
+#### Supported Languages
 - **High-Level APIs**: Python, Java, Scala, SparkSQL.
 - **Low-Level APIs**: RDD (Resilient Distributed Datasets).
 
-## Spark Components
+### Spark Components
 - **Spark Core**: RDDs for distributed data processing.
 - **Spark Streaming**: For real-time or near real-time data processing.
 - **Spark SQL**: Treats Spark as a distributed database, allowing SQL queries at scale.
 - **MLLib**: Distributed machine learning library.
 - **GraphX**: For graph processing.
 
-## Why Scala?
+### Why Scala?
 - Spark is written in Scala, which is well-suited for distributed processing due to its functional programming model.
 - Scala provides:
   - Fast performance (compiles to Java bytecode).
   - Less boilerplate code than Java.
 - Python is slower since it’s also compiled to Java bytecode, making Scala a preferred choice for optimal performance.
 
-# Section 2: Scala Crash Course
+## Section 2: Scala Crash Course
 
-## Scala Overview
+### Scala Overview
 
-### Scala Features
+#### Scala Features
 
 - **Runs on the Java Virtual Machine (JVM)**: Scala is designed to be compatible with Java, enabling seamless integration with Java libraries and frameworks.
 - **Functional Programming**: Scala supports functional programming paradigms, allowing developers to treat functions as first-class citizens, utilize higher-order functions, and leverage immutability.
@@ -106,7 +106,7 @@
    - **Python**: Similar concerns with threads; often uses `asyncio` for asynchronous programming.
    - **Scala**: Utilizes immutability and functional programming constructs to simplify concurrency, reducing errors related to shared state.
 
-#### Conclusion
+##### Conclusion
 
 Functional programming offers a different approach to coding, focusing on functions, immutability, and side-effect-free computations. While Java and Python incorporate some functional programming features, they are primarily object-oriented, leading to different design patterns. Scala fully embraces both functional and object-oriented paradigms, allowing developers to choose the best approach for their needs.
 
@@ -580,9 +580,9 @@ val finalAnswer = candidates.filter(_ % 3 == 0) // List of numbers divisible by 
 println(finalAnswer) // Prints the final result
 ```
 
-# Section 3 
+## Section 3 
 
-## Introduction to RDD
+### Introduction to RDD
 
 **RDD** - Resilient Distributed Dataset
 
@@ -819,7 +819,7 @@ sortedResults.foreach(println)
 
 This will output each `(rating, count)` pair to the console, allowing you to visualize how many times each rating was given in the dataset. This step is essential for confirming that the data processing has been done correctly and for observing the distribution of ratings.
 
-## Spark Internals 
+### Spark Internals 
 
 In Spark, operations such as `map` can be executed in parallel across multiple machines, leveraging distributed computing for efficiency and speed. Here are some key points about Spark internals:
 
@@ -837,11 +837,11 @@ In Spark, operations such as `map` can be executed in parallel across multiple m
 
 - **Scheduling and Execution**: Spark's cluster manager schedules tasks across the available nodes in the cluster, ensuring efficient resource utilization and minimizing data transfer. Each task executes independently, contributing to the overall job completion.
 
-## K-V RDDs and the Average Friends by Age Example
+### K-V RDDs and the Average Friends by Age Example
 
 In Spark, key-value (K-V) RDDs allow each row to be a tuple, enabling powerful data processing capabilities. Here's how to work with K-V RDDs and calculate the average number of friends by age:
 
-### Creating K-V RDDs
+#### Creating K-V RDDs
 
 Each row of the RDD can be represented as a tuple, where the first element is the key and the second is the value. For example:
 
@@ -851,7 +851,7 @@ val totalsByAge = rdd.map(x => (x.age, 1))
 
 In this example, x.age is the key, and 1 is the value representing a count.
 
-### Operations on K-V RDDs
+#### Operations on K-V RDDs
 
 Key-value (K-V) RDDs in Spark provide several specialized operations that enable efficient data manipulation and aggregation. Here are some of the common operations you can perform on K-V RDDs:
 
@@ -1009,11 +1009,11 @@ This example demonstrates how to work with K-V RDDs in Spark, illustrating both 
   - Enables efficient execution of operation sequences on key-value data.
   - Important to consider when designing Spark jobs for optimal performance.
 
-## Filtering RDDs, and the Minimum Temperature by Location Example
+### Filtering RDDs, and the Minimum Temperature by Location Example
 
 This example demonstrates how to process weather data to find the minimum temperature for each location.
 
-### Input Schema
+#### Input Schema
 
 The input data has a peculiar format with the following fields:
 - stationID
@@ -1028,7 +1028,7 @@ Example row:
 ITE00100554,18000101,TMAX,-75,,,E,
 ```
 
-### Data Processing Steps
+#### Data Processing Steps
 
 1. **Parsing and Filtering**
 
@@ -1100,11 +1100,11 @@ ITE00100554,18000101,TMAX,-75,,,E,
 
 This example showcases a typical Spark workflow: parsing, filtering, transforming to key-value pairs, aggregating, and then collecting results for final processing or display.
 
-## Counting Word Occurrences using FlatMap()
+### Counting Word Occurrences using FlatMap()
 
 The `flatMap()` operation is a powerful transformation that can create multiple new elements from each input element. This makes it particularly useful for tasks like word counting in text analysis.
 
-### Basic Word Count
+#### Basic Word Count
 
 ```scala
 val sc = new SparkContext()
@@ -1123,7 +1123,7 @@ Key Points:
 - `flatMap()` creates a new RDD by applying the function to each element and flattening the results.
 - `countByValue()` is an action that returns a collection of (word, count) pairs.
 
-### Improving the Word Count Script with Regular Expressions
+#### Improving the Word Count Script with Regular Expressions
 
 ```scala
 // Use regular expression to split on any non-word character
@@ -1140,7 +1140,7 @@ Improvements:
 - `\\W+` splits on one or more non-word characters, effectively removing punctuation.
 - Converting to lowercase ensures consistent counting (e.g., "The" and "the" are counted as the same word).
 
-### Sorting the Word Count Results
+#### Sorting the Word Count Results
 
 To sort the results by count, we need to swap the key-value pairs and use `sortByKey()`:
 
@@ -1160,7 +1160,7 @@ Key Points:
 - `sortByKey(ascending = false)` sorts in descending order (most frequent words first).
 - The final result is a sorted list of (count, word) pairs.
 
-### Performance Considerations
+#### Performance Considerations
 
 1. **Memory Usage**: `countByValue()` collects all results to the driver. For very large datasets, consider using `reduceByKey()` and `take()` or `top()` instead.
 
@@ -1168,7 +1168,7 @@ Key Points:
 
 3. **Caching**: If you plan to reuse the `words` or `lowerCaseWords` RDD multiple times, consider caching it with `cache()` or `persist()`.
 
-### Further Improvements
+#### Further Improvements
 
 1. **Stop Words**: Remove common words (like "the", "a", "an") that don't add much meaning.
 
@@ -1180,7 +1180,7 @@ Key Points:
 
 This word count example demonstrates the power of `flatMap()` in conjunction with other Spark transformations and actions, showcasing how to perform text analysis tasks efficiently on large datasets.
 
-## Find the Total Amount Spent by Customer
+### Find the Total Amount Spent by Customer
 
 customer-order.csv
 
@@ -1220,9 +1220,9 @@ object CustomerTotalAmountSpentExercise {
 
 
 
-# Section 4: Spark SQL, DataFrames, and Datasets
+## Section 4: Spark SQL, DataFrames, and Datasets
 
-## Introduction to Spark SQL
+### Introduction to Spark SQL
 
 Spark SQL is a module in Apache Spark that integrates relational processing with Spark's functional programming API. It became a prominent feature starting with Spark 2.x, offering several advantages over traditional RDDs:
 
@@ -1230,17 +1230,17 @@ Spark SQL is a module in Apache Spark that integrates relational processing with
 - Seamless integration with various data sources
 - Enhanced support for structured and semi-structured data
 
-## DataFrames: The Foundation of Spark SQL
+### DataFrames: The Foundation of Spark SQL
 
 DataFrames are distributed collections of data organized into named columns. They are conceptually equivalent to tables in a relational database or data frames in R/Python.
 
-### Key Features of DataFrames
+#### Key Features of DataFrames
 
 - **Schema-defined**: Each DataFrame has a defined structure.
 - **Optimized**: Spark SQL's Catalyst optimizer can automatically optimize operations on DataFrames.
 - **Language Support**: Available in Scala, Java, Python, and R.
 
-### Working with DataFrames
+#### Working with DataFrames
 
 Here's a basic example of creating and using a DataFrame in Scala:
 
@@ -1267,17 +1267,17 @@ df.filter($"age" > 30).show()
 df.groupBy("department").agg(avg("salary").alias("avg_salary")).show()
 ```
 
-## Datasets: Type-Safe DataFrames
+### Datasets: Type-Safe DataFrames
 
 Datasets are an extension of DataFrames that provide type-safety for strongly typed languages like Scala and Java.
 
-### Key Features of Datasets
+#### Key Features of Datasets
 
 - **Type-safe**: Errors are caught at compile time.
 - **Object-oriented**: Each row in a Dataset is an object of a user-defined class.
 - **Performance**: Offer the benefits of DataFrames with additional compile-time optimizations.
 
-### Working with Datasets
+#### Working with Datasets
 
 Here's an example of using Datasets in Scala:
 
@@ -1293,7 +1293,7 @@ val peopleDS = spark.read
 peopleDS.filter(_.age > 30).show()
 ```
 
-## Transitioning from RDDs to DataFrames/Datasets
+### Transitioning from RDDs to DataFrames/Datasets
 
 While RDDs are still supported, there's a strong trend towards using DataFrames and Datasets due to:
 
@@ -1316,11 +1316,11 @@ case class Person(id: Int, name: String)
 val ds = spark.createDataset(rdd.map { case (id, name) => Person(id, name) })
 ```
 
-## Spark SQL Operations
+### Spark SQL Operations
 
 Spark SQL allows you to query structured data using SQL or the DataFrame API.
 
-### SQL Queries
+#### SQL Queries
 
 ```scala
 // Register the DataFrame as a SQL temporary view
@@ -1331,7 +1331,7 @@ val results = spark.sql("SELECT name, age FROM people WHERE age > 30")
 results.show()
 ```
 
-### DataFrame API
+#### DataFrame API
 
 ```scala
 import org.apache.spark.sql.functions._
@@ -1341,7 +1341,7 @@ val results = df.select("name", "age").filter($"age" > 30)
 results.show()
 ```
 
-## User-Defined Functions (UDFs)
+### User-Defined Functions (UDFs)
 
 UDFs allow you to extend the capabilities of Spark SQL by defining custom operations.
 
@@ -1355,7 +1355,7 @@ val upperCase = udf((s: String) => s.toUpperCase)
 df.withColumn("upper_name", upperCase($"name")).show()
 ```
 
-## Best Practices and Performance Tips
+### Best Practices and Performance Tips
 
 1. **Use DataFrames/Datasets over RDDs** when possible for better performance.
 2. **Leverage Catalyst Optimizer** by using DataFrame/Dataset operations instead of UDFs when possible.
@@ -1363,13 +1363,13 @@ df.withColumn("upper_name", upperCase($"name")).show()
 4. **Cache frequently used DataFrames/Datasets** to improve query performance.
 5. **Use appropriate data formats** like Parquet for better read/write performance.
 
-## Conclusion
+### Conclusion
 
 Spark SQL, with its DataFrame and Dataset APIs, provides a powerful and efficient way to process structured data in Spark. By understanding and leveraging these APIs, you can write more concise, performant, and maintainable Spark applications.
 
-## Deep Dive: DataFrames vs Datasets
+### Deep Dive: DataFrames vs Datasets
 
-### Relationship between DataFrames and Datasets
+#### Relationship between DataFrames and Datasets
 
 DataFrames and Datasets are closely related concepts in Spark SQL:
 
@@ -1379,7 +1379,7 @@ DataFrames and Datasets are closely related concepts in Spark SQL:
 
 3. **API Consistency**: Both share a common API for most operations, making it easy to switch between them.
 
-### Comparison of DataFrames and Datasets
+#### Comparison of DataFrames and Datasets
 
 | Feature | DataFrame | Dataset |
 |---------|-----------|---------|
@@ -1459,11 +1459,9 @@ topProducts.show()
 
 Both DataFrames and Datasets have their place in the Spark ecosystem. DataFrames offer flexibility and ease of use, making them popular for data analysis and exploration. Datasets provide strong typing and better performance for complex operations, making them ideal for large-scale, production-grade data processing applications. The choice between them often depends on the specific requirements of your project, the programming language you're using, and the balance you need between development speed and type safety.
 
-# Spark Code Comparison and Examples with Datasets
+### Spark Code Comparison and Examples with Datasets
 
-[Previous content remains unchanged]
-
-## Examples:
+#### Examples:
 
 ### 1. SparkSQLDataset.scala - Using SQL Commands
 
@@ -1515,9 +1513,9 @@ object DataFramesDataset {
 }
 ```
 
-## Exercise:
+### Exercise:
 
-### FriendsByAgeExample.scala - Using Datasets
+#### FriendsByAgeExample.scala - Using Datasets
 
 Convert the following RDD-based example to use Datasets:
 
@@ -1550,9 +1548,9 @@ object FriendsByAgeDataset {
 }
 ```
 
-## Examples:
+### Examples:
 
-### 1. Word Count Example Using Datasets
+#### 1. Word Count Example Using Datasets
 
 #### WordCountDataset.scala
 
@@ -1611,7 +1609,7 @@ object WordCountBetterSortedDataset {
 }
 ```
 
-### 2. Min Temperature Example with Datasets
+#### 2. Min Temperature Example with Datasets
 
 This example shows how to find minimum temperatures using Datasets:
 
@@ -1661,7 +1659,7 @@ These examples demonstrate various ways to use Datasets in Spark, including:
 
 Remember that Datasets provide type-safety and are generally preferred in modern Spark applications when working with structured or semi-structured data.
 
-## Exercise: Spark Code Comparison: DS vs CustomerDS Approach
+### Exercise: Spark Code Comparison: DS vs CustomerDS Approach
 
 Here's the code comparison with added **tnotes** in raw markdown, along with **pros and cons** for each version.
 
