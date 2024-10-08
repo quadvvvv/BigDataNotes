@@ -1,0 +1,21 @@
+Summary Borg
+
+This paper discusses a cluster manager called Borg, which is developed by Google for its developers and system administrators using Google applications or services.
+The paper can be broken down into the following parts.
+
+From the user perspective, 
+Users can create two kinds of workloads, “production” jobs and “non-production” jobs. Each job consists of serious of tasks. Users can reserve recourses for the job on a machine. For the jobs created by user, Borg uses priority and quota to place these tasks. To identify these tasks, Borg also provides a “”Borg Name Service”.
+
+From the architecture perspective,
+Machines belong to a Borg cell and cells belong to a Borg cluster. Each machine will have a Borglet, which handles the local tasks and report to Borgmaster, a controller for the Borg cell it belongs to. The Borgmaster then handles the scheduling of a job, controls the traffic of different jobs. It can also scale up a cell to contain more machines.
+
+From the availability perspective, 
+Various techniques are implemented to enable Borg have a 99.99% practical availability. 
+
+From the utilization perspective, 
+This part evaluates the resource utilization of some Borg’s policies. It confirms that the usage cell sharing, large cells, medium resource reclamation will enhance the efficiency. 
+
+From the isolation perspective, 
+Borg uses a Linux chroot jail to achieve security isolation. As for the performance isolation, Borg provides a class of Latency-Sensitive(LS) tasks, that have the high-priority. The functionality is achieved by Borglet and Borgmaster.
+
+Apart from these technicalities of Borg, the paper also discusses about other studies on resource management, and lessons from implementation of Borg. 

@@ -1,0 +1,11 @@
+
+This paper discusses Resilient Distributed Datasets (RDD), a fault-tolerant and parallel distributed memory abstraction. This abstraction enables the users to reduce overheads significantly with the help of shared memory. This abstraction accommodates general computing needs without introducing specific framework for different applications. With the sharing of distributed memory, intermediate data reuse can be extremely beneficial to interactive mating learning and interactive data mining tools. 
+
+For the general introduction of Resilient Distributed Datasets (RDD),
+RDD is namely a collection of records are read-only and partitioned. One of the key properties of RDD is its lineage, that is, it can reconstruct on its own after failure, without incurring overheads. The lineage property contributes to its main benefit, which is high fault tolerance. This is also backed up by the fact that RDDs can only be written through coarse-grained transformations, which only enables bulk jobs. A second benefit of RDD is that system can possibly using backup tasks to mitigate slower nodes. A third benefit of RDD is automatic work placement based on data locality and graceful degrading of partitions when memory is not enough. 
+
+For the Spark interface, 
+Spark exposes RDDs functionalities by representing RDDs as statical object sand providing methods to invoke transformations on the objects. Apart from standard operations, users can also control persistence and partitioning. Two examples of using Spark API is given. For the logistic regression example, a persistent RDD can speed up the iterative process by 20 times. For the more complicated PageBank example, lineage is crucial to save time over the running of the algorithm and partitioning of the RDDs can improve the performance as well.
+
+For representation of RDDs in Spark,
+The developer uses a graph-based representation in Spark to facilitate easy use. The interface has five operations: partitions, dependencies, preferredLocations, iterator, and partitioner. With the common interface, transformations like map, union, sample, and join are easy to be implemented. 

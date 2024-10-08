@@ -1,0 +1,16 @@
+Summary MapReduce: Simplified Data Processing on Large Clusters
+
+MapReduce is a programming model that offers a simple interface for automatic parallelization and distribution of large-scale computations. This allows users to utilize highly scalable parallel and large distributed systems at ease. 
+
+From a higher level overview perspective,
+The model is based on two functions, Map and Reduce, both written by users given specific program they’re trying to convert to MapReduce computations. First, during the Map, the user will generate a series of intermediate key-value pairs from a series of input key-value pairs. Second, during the Reduction, the user will merge the values with the same intermediate key. 
+
+From the implementation perspective,
+Every implementation should be based on the environment it’s running on, therefore, this paper is based on Google’s large clusters of commodity PCs. From Execution Overview, the MapReduce function splits and sorts the data into R pieces using a partitioning function where parameters are specified by the user. When a program finishes, user will be able to get R output files and use them as an input to another MapReduce call or in other ways.
+The master, as a special copy of the program, keeps track of several data structures and information about the map tasks and reduce tasks.
+MapReduce is highly tolerant to large-scale worker failures by reseting the failed worker to idle state and make it eligible for rescheduling. Since MapReduce only has a master, its failure is unlikely.
+
+From the refinement perspective,
+The base functionalities can be extended to apply to other scenarios. For instance, Partitioning function can be used to make sure all entries for a single host to end up in the same cutout file. Since Combiner function is written to an intermediate	file, it could significantly speed up certain MapReduce operations; Input and Output types can also be used to make it easier for user to code and add support. Sometimes, bad records will be skipped to move forward with the process. For the Local Execution, the bugs are hard to trace because it is developed on the distributed systems. Yet it can be solved by mocking tests on the local machine. For the status information, status pages will be provided to the users to keep track of the related information about multiple tasks . For the counters, it provides a convenient way for users for sanity checking the behavior of  MapReduce operations.
+
+From the performance perspective, MapReduce programming model is user-friendly, fairly efficient on large clusters of machine and thus is suitable for many large computational problems.

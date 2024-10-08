@@ -1,0 +1,20 @@
+Summary Dynamo
+
+This paper discusses the Dynamo key-value storage system that is tailored specifically to Amazon's core services' need for high reliability and scalability.
+
+From the background perspective,
+The system is built with a simple key/value interface that is highly availably and decentralized. To achieve Amazon's strict performance standards, clients and services are using a Service Level agreement (SLA). The design of the Dynamo is focusing on a conflict resolution that always podia writable data store, and guarantees eventual consistency.
+
+From the related work perspective,
+The paper compare and contrasts Dynamo with other storage system including P2P, Ficus, Coda, NFS and GFS. However, unlike Dynamo, these de-centralized/distributed systems cannot meet the certain crucial requirements of Amazon's services.
+
+From the system design perspective,
+The system interface provides a simple get() and put() function. The put() will include a "key", the object to be stored, and the context of the system metadata. To ensure the scalability demand, the partitioning algorithm is designed on a variant of consistent hashing to assign each data with a "key" and distribute the data load across multiple storage hosts. To ensure this, the algorithm introduces "virtual nodes". To ensure the high availability and durability, Dynamo resorts to data replications. Each data is assigned a "key", associated with the "key" is a preference list with all the nodes storing the data, which may include replications. To ensure the eventual consistency, the system is designed to enable multiple versions of the same data to coexist. Upon collapse operation, different versions of a data could merge based on a reconciliation mechanism built on vector clocks. To handle permanent failures, Dynamo also provides two mechanisms, one is called Hinted handoff, and the other is called Replica Synchronization (Anti-Entropy) Protocol with Merkle trees. To handle failures, Dynamo also introduce Memberships for nodes. Failure detection is also discussed in this section of the paper.
+
+From the implementation perspective,
+Dynamo has three components, a membership and failure detection component as discussed in the previous section, a request coordination component which is built on an event-driven messaging substrate, and a pluggable local persistent engine component that can adapt to different applications' access patterns. For the request coordination component, each client request results in a state machine on the node that received the request, and this state machine will handle the requests.
+
+At the end of the paper, lessons and implementation experiences are also mentioned, but won't necessarily be a major component of this summary. 
+
+
+

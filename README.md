@@ -10,6 +10,8 @@ This is the repo for my notes taken for articles, courseworks, or projects relat
 BigDataNotes/
 ├── SparkScala
 │   └──SparkScalaSection-*.md
+├── PaperSummary
+│   └──DistributedComputingPaperSummary.txt
 ├── scripts.py
 └── README.md
 
